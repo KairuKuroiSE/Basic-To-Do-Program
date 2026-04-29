@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Python To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>A simple To-Do List</h1>
+
+        <form action="/add" method="POST">
+            <input type="text" name="content" placeholder="What needs to be done?" required>
+            <input type="time" name="deadline">
+            <button type="submit">Add Task</button>
+        </form>
+
+        <hr>
+
+<ul>
+    {% for task in tasks %}
+    <li>
+        <a href="{{ url_for('complete_task', task_id=loop.index0) }}">
+            {% if task.complete %}
+                <strike>{{ task.content }}</strike> ✅
+            {% else %}
+                {{ task.content }}
+            {% endif %}
+        </a>
+        <small>(Deadline: {{ task.deadline }})</small>
+    </li>
+    {% endfor %}
+</ul>
+
+    </div>
+
+</body>
+</html>
