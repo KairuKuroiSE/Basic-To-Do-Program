@@ -11,13 +11,24 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add_task():
+    # 1. Gather data from the form
     task_content = request.form.get('content')
-    task_deadline = request.form.get('deadline')
+    t_time = request.form.get('deadline_time')
+    t_date = request.form.get('deadline_date')
 
+    # 2. Check if the user actually typed a task
     if task_content:
-        # We ensure every task starts with 'complete': False
-        tasks.append({'content': task_content, 'deadline': task_deadline, 'complete': False})
+        # Combine date and time into one readable string
+        full_deadline = f"{t_date} at {t_time}" if t_date and t_time else t_date or t_time
+        
+        # 3. Add the new task to our list
+        tasks.append({
+            'content': task_content, 
+            'deadline': full_deadline, 
+            'complete': False
+        })
     
+    # 4. Send the user back to the home page
     return redirect(url_for('index'))
 
 @app.route('/complete/<int:task_id>')
